@@ -104,8 +104,6 @@ const cargar_tabla = async () => {
     botonera.append(btnEditar, btnEliminar)
     tdBotonera.append(botonera)
 
-
-
     fila.append(tdNombre, tdApellido, tdTelefono, tdCorreo, tdDocumento, tdBotonera);
     tabla_cuerpo.append(fila);
   });
