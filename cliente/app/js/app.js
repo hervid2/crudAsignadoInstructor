@@ -7,7 +7,7 @@
 // Importaciones para las ayudas
 import { listarDocumentos } from "../casos_de_uso/documentos/index.js";
 import { listarGeneros } from "../casos_de_uso/generos/index.js";
-import { guardar_usuario } from "../casos_de_uso/usuarios/index.js";
+import { guardar_usuario, listar_usuarios } from "../casos_de_uso/usuarios/index.js";
 import {
   tiene_valores,
   validar_campos,
@@ -18,7 +18,7 @@ import {
 
 /**
  * ****************************************
- * Definimos las variebales
+ * Definimos las variables
  * ****************************************
  */
 
@@ -30,18 +30,19 @@ const email = document.querySelector("#correo");
 const tipoDocumento = document.querySelector("#tipo_documento");
 const documento = document.querySelector('#documento');
 const generos = document.querySelector('#generos');
+const tabla = document.querySelector("#tabla");
 
 /**
  * ****************************************
  * Programos los Metodos
  * ****************************************
  */
-const cargar_pagina = async () => {
+const cargar_formulario = async () => {
 
   // Cargamos los generos en el select
   const arrayGeneros = await listarGeneros();
   const arrayDocumentos = await listarDocumentos()
-  
+
   arrayGeneros.forEach((genero) => {
     const label = document.createElement("label");
     const input = document.createElement("input");
@@ -55,11 +56,11 @@ const cargar_pagina = async () => {
     input.setAttribute("value", genero.id);
     input.setAttribute("data-required", true);
     generos.append(label, input);
-  }); 
-  
+  });
+
   const option = document.createElement("option");
   option.textContent = "Seleccione...";
-  tipoDocumento.append(option);  
+  tipoDocumento.append(option);
   arrayDocumentos.forEach((documento) => {
     const option = document.createElement("option");
     option.textContent = documento.nombre;
@@ -68,7 +69,50 @@ const cargar_pagina = async () => {
   });
 
 
- }
+}
+
+const cargar_tabla = async () => {
+  const usuarios = await listar_usuarios();
+
+  const tabla_cuerpo = tabla.querySelector("tbody")
+
+  usuarios.forEach(usuario => {
+    const fila = document.createElement("tr");
+    const tdNombre = document.createElement("td");
+    const tdApellido = document.createElement("td");
+    const tdTelefono = document.createElement("td");
+    const tdCorreo = document.createElement("td");
+    const tdDocumento = document.createElement("td");
+    const tdBotonera = document.createElement("td");
+    const botonera = document.createElement("div");
+    const btnEditar = document.createElement("button");
+    const btnEliminar = document.createElement("button");
+
+    tdNombre.textContent = usuario.nombre;
+    tdApellido.textContent = usuario.apellidos;
+    tdTelefono.textContent = usuario.telefono;
+    tdCorreo.textContent = usuario.correo;
+    tdDocumento.textContent = usuario.documento;
+
+    btnEditar.textContent = "Editar";
+    btnEliminar.textContent = "Eliminar";
+
+    botonera.classList.add("botonera");
+    btnEditar.classList.add("btn", "btn--samall");
+    btnEliminar.classList.add("btn", "btn--samall", "btn--danger");
+
+    botonera.append(btnEditar, btnEliminar)
+    tdBotonera.append(botonera)
+
+
+
+    fila.append(tdNombre, tdApellido, tdTelefono, tdCorreo, tdDocumento, tdBotonera);
+    tabla_cuerpo.append(fila);
+  });
+
+
+
+}
 
 // Función asincrona para poder manipular las peticiones y guardar los datos del formulario
 const guardar = async (e) => {
@@ -79,15 +123,17 @@ const guardar = async (e) => {
   // Validamos eu el objeto tenga los datos completos y no llegen vacios
   if (tiene_valores(data)) {
     // Enviamos los datos al metodo guardar_usuario
-    const respuesta = await guardar_usuario(data);    
+    const respuesta = await guardar_usuario(data);
+    console.log(respuesta);
+
     if (respuesta.status === 201) {
       alert("Usuario guardado correctamente");
       // Limpiamos el formulario
       e.target.reset();
-    }else{
+    } else {
       alert("Error al guardar el usuario");
     }
-  }else{
+  } else {
     alert("Formulario incompleto");
   }
 }
@@ -100,12 +146,9 @@ const guardar = async (e) => {
 
 // Evento que se ejecuta cuando el documento se ha cargado
 document.addEventListener("DOMContentLoaded", () => {
-  cargar_pagina();
+  cargar_formulario();
 
-
-
-
-  
+  cargar_tabla();
 });
 
 nombre.addEventListener("keydown", son_letras);

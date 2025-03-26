@@ -107,6 +107,26 @@
       "correo": "fivybuhiw@mailinator.com",
       "tipo_documento": "2",
       "documento": "12345687"
+    },
+    {
+      "genero": "2",
+      "nombre": "Juan Camilo",
+      "apellidos": "Beltran",
+      "telefono": "32154784",
+      "correo": "jun@gmail.com",
+      "tipo_documento": "1",
+      "documento": "214578412614",
+      "id": "wF6UHrk"
+    },
+    {
+      "genero": "3",
+      "nombre": "pablo",
+      "apellidos": "vega",
+      "telefono": "3004149418",
+      "correo": "jun@gmail.com",
+      "tipo_documento": "2",
+      "documento": "214578412614",
+      "id": "e_tfupZ"
     }
   ]
 }
