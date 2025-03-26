@@ -101,6 +101,11 @@ const guardar = async (e) => {
 // Evento que se ejecuta cuando el documento se ha cargado
 document.addEventListener("DOMContentLoaded", () => {
   cargar_pagina();
+
+
+
+
+  
 });
 
 nombre.addEventListener("keydown", son_letras);
