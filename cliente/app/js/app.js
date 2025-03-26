@@ -81,6 +81,13 @@ const cargar_pagina = async () => {
     const tdtelefono = document.createElement("td");
     const tdcorreo = document.createElement("td");
     const tddocumento = document.createElement("td");
+    const tdbotonera = document.createElement("td");
+    const botonera = document.createElement("div");
+    const btnEditar = document.createElement("button");
+    const btnEliminar = document.createElement("button");
+
+    botonera.append(btnEditar,btnEliminar);
+    tdbotonera.append(botonera);
   
     tdnombre.textContent = usuario.nombre;
     tdapellidos.textContent = usuario.apellidos;
@@ -88,12 +95,20 @@ const cargar_pagina = async () => {
     tdcorreo.textContent = usuario.correo;
     tddocumento.textContent = usuario.documento;
 
+    btnEditar.textContent = "Editar";
+    btnEliminar.textContent = "Eliminar";
+
+    botonera.classList.add("botonera");
+    btnEditar.classList.add("btn","btn--samall");
+    btnEliminar.classList.add("btn","btn--samall","btn--danger");
+
     fila.append(tdnombre);
     fila.append(tdapellidos);
     fila.append(tdtelefono);
     fila.append(tdcorreo);
     fila.append(tddocumento);
-    tabla_cuerpo.append(fila);
+    tabla_cuerpo.append(fila); 
+    fila.append(tdbotonera);
   });
  }
 
