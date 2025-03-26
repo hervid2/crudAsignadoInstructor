@@ -7,7 +7,7 @@
 // Importaciones para las ayudas
 import { listarDocumentos } from "../casos_de_uso/documentos/index.js";
 import { listarGeneros } from "../casos_de_uso/generos/index.js";
-import { guardar_usuario } from "../casos_de_uso/usuarios/index.js";
+import { guardar_usuario, listarUsuarios } from "../casos_de_uso/usuarios/index.js";
 import {
   tiene_valores,
   validar_campos,
@@ -18,7 +18,7 @@ import {
 
 /**
  * ****************************************
- * Definimos las variebales
+ * Definimos las variables
  * ****************************************
  */
 
@@ -30,6 +30,7 @@ const email = document.querySelector("#correo");
 const tipoDocumento = document.querySelector("#tipo_documento");
 const documento = document.querySelector('#documento');
 const generos = document.querySelector('#generos');
+const tabla = document.querySelector("#tabla");
 
 /**
  * ****************************************
@@ -70,6 +71,32 @@ const cargar_pagina = async () => {
 
  }
 
+ const cargar_tabla = async () =>{
+  const usuarios = await listarUsuarios();
+  const tabla_cuerpo = tabla.querySelector("tbody");
+  usuarios.forEach(usuario => {
+    const fila = document.createElement("tr");
+    const tdnombre = document.createElement("td");
+    const tdapellidos = document.createElement("td");
+    const tdtelefono = document.createElement("td");
+    const tdcorreo = document.createElement("td");
+    const tddocumento = document.createElement("td");
+  
+    tdnombre.textContent = usuario.nombre;
+    tdapellidos.textContent = usuario.apellidos;
+    tdtelefono.textContent = usuario.telefono;
+    tdcorreo.textContent = usuario.correo;
+    tddocumento.textContent = usuario.documento;
+
+    fila.append(tdnombre);
+    fila.append(tdapellidos);
+    fila.append(tdtelefono);
+    fila.append(tdcorreo);
+    fila.append(tddocumento);
+    tabla_cuerpo.append(fila);
+  });
+ }
+
 // Función asincrona para poder manipular las peticiones y guardar los datos del formulario
 const guardar = async (e) => {
   // Detenemos el comportamiento por defecto del formulario
@@ -101,6 +128,7 @@ const guardar = async (e) => {
 // Evento que se ejecuta cuando el documento se ha cargado
 document.addEventListener("DOMContentLoaded", () => {
   cargar_pagina();
+  cargar_tabla();
 });
 
 nombre.addEventListener("keydown", son_letras);
