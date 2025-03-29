@@ -7,7 +7,12 @@
 // Importaciones para las ayudas
 import { listarDocumentos } from "../casos_de_uso/documentos/index.js";
 import { listarGeneros } from "../casos_de_uso/generos/index.js";
-import { guardar_usuario, listar_usuarios } from "../casos_de_uso/usuarios/index.js";
+import {
+  buscar_usuario_por_id,
+  eliminar_usuario_por_id,
+  guardar_usuario,
+  listar_usuarios
+} from "../casos_de_uso/usuarios/index.js";
 import {
   tiene_valores,
   validar_campos,
@@ -31,6 +36,8 @@ const tipoDocumento = document.querySelector("#tipo_documento");
 const documento = document.querySelector('#documento');
 const generos = document.querySelector('#generos');
 const tabla = document.querySelector("#tabla");
+
+// console.log(tabla);
 
 /**
  * ****************************************
@@ -67,48 +74,50 @@ const cargar_formulario = async () => {
     option.value = documento.id;
     tipoDocumento.append(option);
   });
-
-
 }
 
 const cargar_tabla = async () => {
   const usuarios = await listar_usuarios();
-
-  const tabla_cuerpo = tabla.querySelector("tbody")
-
   usuarios.forEach(usuario => {
-    const fila = document.createElement("tr");
-    const tdNombre = document.createElement("td");
-    const tdApellido = document.createElement("td");
-    const tdTelefono = document.createElement("td");
-    const tdCorreo = document.createElement("td");
-    const tdDocumento = document.createElement("td");
-    const tdBotonera = document.createElement("td");
-    const botonera = document.createElement("div");
-    const btnEditar = document.createElement("button");
-    const btnEliminar = document.createElement("button");
-
-    tdNombre.textContent = usuario.nombre;
-    tdApellido.textContent = usuario.apellidos;
-    tdTelefono.textContent = usuario.telefono;
-    tdCorreo.textContent = usuario.correo;
-    tdDocumento.textContent = usuario.documento;
-
-    btnEditar.textContent = "Editar";
-    btnEliminar.textContent = "Eliminar";
-
-    botonera.classList.add("botonera");
-    btnEditar.classList.add("btn", "btn--samall");
-    btnEliminar.classList.add("btn", "btn--samall", "btn--danger");
-
-    botonera.append(btnEditar, btnEliminar)
-    tdBotonera.append(botonera)
-
-    fila.append(tdNombre, tdApellido, tdTelefono, tdCorreo, tdDocumento, tdBotonera);
-    tabla_cuerpo.append(fila);
+    crearFila(usuario);
   });
+}
 
 
+const crearFila = ({ id, nombre, apellidos, telefono, correo, tipo_documento, documento }) => {
+
+  const tBody = tabla.querySelector("tbody");
+  const tr = tBody.insertRow(0);
+  const tdNombre = tr.insertCell(0);
+  const tdApellidos = tr.insertCell(1);
+  const tdTelefono = tr.insertCell(2);
+  const tdCorreo = tr.insertCell(3);
+  const tdDocumento = tr.insertCell(4);
+  const tdBotonera = tr.insertCell(5);
+  // Agregar el contenido a las celdas
+  tdNombre.textContent = nombre;
+  tdApellidos.textContent = apellidos;
+  tdTelefono.textContent = telefono;
+  tdCorreo.textContent = correo;
+  tdDocumento.textContent = documento;
+
+  const div = document.createElement("div");
+  const btnEliminar = document.createElement("button");
+  const btnEditar = document.createElement("button");
+
+  btnEditar.setAttribute("data-id", id)
+  btnEliminar.setAttribute("data-id", id)
+
+  btnEditar.textContent = "Editar";
+  btnEliminar.textContent = "Eliminar";
+
+  div.classList.add("botonera");
+  btnEditar.classList.add("btn", "btn--samall", "editar");
+  btnEliminar.classList.add("btn", "btn--samall", "btn--danger", "eliminar");
+  div.append(btnEditar, btnEliminar);
+  tdBotonera.append(div);
+
+  tr.setAttribute("id", `user_${id}`);
 
 }
 
@@ -122,12 +131,14 @@ const guardar = async (e) => {
   if (tiene_valores(data)) {
     // Enviamos los datos al metodo guardar_usuario
     const respuesta = await guardar_usuario(data);
-    console.log(respuesta);
-
+    // console.log(respuesta);
     if (respuesta.status === 201) {
       alert("Usuario guardado correctamente");
       // Limpiamos el formulario
       e.target.reset();
+      // Llamamos el metodo crearFila
+      crearFila(respuesta.data);
+
     } else {
       alert("Error al guardar el usuario");
     }
@@ -148,6 +159,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
   cargar_tabla();
 });
+
+document.addEventListener("click", async (e) => {
+  // Evento para el botón editar en latabla que creamos en el SENA
+  if (e.target.matches(".editar")) {
+    const data = await buscar_usuario_por_id(e.target.dataset.id)
+    console.log("desde appp", data);
+
+  }
+  if (e.target.matches(".eliminar")) {
+    eliminar_usuario_por_id(e.target.dataset.id);
+  }
+
+})
 
 nombre.addEventListener("keydown", son_letras);
 apellidos.addEventListener("keydown", son_letras);

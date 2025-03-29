@@ -127,6 +127,46 @@
       "tipo_documento": "2",
       "documento": "214578412614",
       "id": "e_tfupZ"
+    },
+    {
+      "genero": "2",
+      "nombre": "john",
+      "apellidos": "beccera",
+      "telefono": "4242727272",
+      "correo": "john@gmail.com",
+      "tipo_documento": "1",
+      "documento": "3535353",
+      "id": "HokArEj"
+    },
+    {
+      "genero": "2",
+      "nombre": "carlos",
+      "apellidos": "apellidos",
+      "telefono": "65412478",
+      "correo": "corre@corre.com",
+      "tipo_documento": "2",
+      "documento": "4514574",
+      "id": "nGBnZYb"
+    },
+    {
+      "genero": "2",
+      "nombre": "Juan",
+      "apellidos": "Beltran",
+      "telefono": "6578412",
+      "correo": "juan@corre.com",
+      "tipo_documento": "2",
+      "documento": "547841254",
+      "id": "cX2A2Yg"
+    },
+    {
+      "genero": "1",
+      "nombre": "Valentina",
+      "apellidos": "Moreno",
+      "telefono": "658412",
+      "correo": "valentna@corre.com",
+      "tipo_documento": "1",
+      "documento": "87451254",
+      "id": "aTRl1ck"
     }
   ]
 }
