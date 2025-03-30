@@ -167,6 +167,56 @@
       "tipo_documento": "1",
       "documento": "87451254",
       "id": "aTRl1ck"
+    },
+    {
+      "genero": "2",
+      "nombre": "Juan",
+      "apellidos": "Beltran",
+      "telefono": "6578412",
+      "correo": "juan@corre.com",
+      "tipo_documento": "2",
+      "documento": "547841254",
+      "id": "AfwYp_a"
+    },
+    {
+      "genero": "2",
+      "nombre": "Juan",
+      "apellidos": "Beltran",
+      "telefono": "6578412",
+      "correo": "juan@corre.com",
+      "tipo_documento": "2",
+      "documento": "547841254",
+      "id": "AwlZQ0I"
+    },
+    {
+      "genero": "2",
+      "nombre": "carlos",
+      "apellidos": "apellidos",
+      "telefono": "65412478",
+      "correo": "corre@corre.com",
+      "tipo_documento": "2",
+      "documento": "4514574",
+      "id": "OOg_yt0"
+    },
+    {
+      "genero": "2",
+      "nombre": "carlos",
+      "apellidos": "apellidos",
+      "telefono": "65412478",
+      "correo": "corre@corre.com",
+      "tipo_documento": "2",
+      "documento": "4514574",
+      "id": "hTo5zse"
+    },
+    {
+      "genero": "1",
+      "nombre": "Juana",
+      "apellidos": "la toxica",
+      "telefono": "3214569874",
+      "correo": "juan@corre.com",
+      "tipo_documento": "3",
+      "documento": "67656984",
+      "id": "unVT-1A"
     }
   ]
 }

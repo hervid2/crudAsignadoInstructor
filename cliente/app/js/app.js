@@ -8,6 +8,7 @@
 import { listarDocumentos } from "../casos_de_uso/documentos/index.js";
 import { listarGeneros } from "../casos_de_uso/generos/index.js";
 import {
+  actualizar_usuario,
   buscar_usuario_por_id,
   eliminar_usuario_por_id,
   guardar_usuario,
@@ -36,6 +37,7 @@ const tipoDocumento = document.querySelector("#tipo_documento");
 const documento = document.querySelector('#documento');
 const generos = document.querySelector('#generos');
 const tabla = document.querySelector("#tabla");
+const identificador = document.querySelector("#identificador");
 
 // console.log(tabla);
 
@@ -74,6 +76,26 @@ const cargar_formulario = async () => {
     option.value = documento.id;
     tipoDocumento.append(option);
   });
+}
+
+const llenado = async (e) => {
+  const id = e.target.dataset.id;
+  const data = await buscar_usuario_por_id(id);
+  identificador.value = id;
+
+  nombre.value = data.nombre;
+  apellidos.value = data.apellidos;
+  telefono.value = data.telefono;
+  correo.value = data.correo;
+  tipoDocumento.selectedIndex = data.tipo_documento;
+  documento.value = data.documento;
+
+  const radios = generos.querySelectorAll('input[type=radio]')
+
+  radios.forEach((elemento) => {
+    elemento.checked = elemento.value == data.genero;
+  })
+
 }
 
 const cargar_tabla = async () => {
@@ -129,18 +151,23 @@ const guardar = async (e) => {
   const data = validar_campos(e.target);
   // Validamos eu el objeto tenga los datos completos y no llegen vacios
   if (tiene_valores(data)) {
-    // Enviamos los datos al metodo guardar_usuario
-    const respuesta = await guardar_usuario(data);
-    // console.log(respuesta);
-    if (respuesta.status === 201) {
-      alert("Usuario guardado correctamente");
-      // Limpiamos el formulario
-      e.target.reset();
-      // Llamamos el metodo crearFila
-      crearFila(respuesta.data);
-
+    // Validar que el formulario tenga un identificador
+    if (identificador.value) {
+      actualizar_usuario(identificador.value, data);
     } else {
-      alert("Error al guardar el usuario");
+      // Enviamos los datos al metodo guardar_usuario
+      const respuesta = await guardar_usuario(data);
+      // console.log(respuesta);
+      if (respuesta.status === 201) {
+        alert("Usuario guardado correctamente");
+        // Limpiamos el formulario
+        e.target.reset();
+        // Llamamos el metodo crearFila
+        crearFila(respuesta.data);
+
+      } else {
+        alert("Error al guardar el usuario");
+      }
     }
   } else {
     alert("Formulario incompleto");
@@ -162,11 +189,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 document.addEventListener("click", async (e) => {
   // Evento para el botón editar en latabla que creamos en el SENA
-  if (e.target.matches(".editar")) {
-    const data = await buscar_usuario_por_id(e.target.dataset.id)
-    console.log("desde appp", data);
-
-  }
+  // Llamar la función para llenar el formulario
+  if (e.target.matches(".editar")) llenado(e);
   if (e.target.matches(".eliminar")) {
     eliminar_usuario_por_id(e.target.dataset.id);
   }
